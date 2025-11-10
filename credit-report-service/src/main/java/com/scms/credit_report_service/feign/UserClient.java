@@ -1,10 +1,10 @@
-package com.scms.credit_service.feign;
+package com.scms.credit_report_service.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.scms.user_service.dto.UserDTO;
+import com.scms.credit_report_service.dto.UserDTO;
 
 @FeignClient("user-service")
 public interface UserClient {

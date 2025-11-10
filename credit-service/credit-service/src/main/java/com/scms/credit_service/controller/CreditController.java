@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.scms.credit_service.entity.CreditReport;
 import com.scms.credit_service.service.CreditService;
+import com.scms.user_service.dto.CreditUserDTO;
 
 @RestController
 @RequestMapping("/credit")
@@ -19,5 +20,10 @@ public class CreditController {
 	@PostMapping("/create-report/{userId}")
 	public CreditReport createReport(@PathVariable ("userId") Long userId) {
 		return creditService.createReport(userId);
+	}
+	
+	@PostMapping("/create-user-report/{userId}")
+	public CreditUserDTO createUserReport(@PathVariable ("userId") Long userId) {
+		return creditService.createUserReport(userId);
 	}
 }

@@ -1,0 +1,51 @@
+version: "3.9"
+
+services:
+  discovery:
+    build:
+      context: ./discovery-server
+    image: discovery
+    container_name: discovery
+    ports:
+      - "8080:8080"
+    networks:
+      - scms-network
+
+  gateway:
+    build:
+      context: ./gateway-service
+    image: gateway
+    container_name: gateway
+    ports:
+      - "8081:8081"
+    depends_on:
+      - discovery
+    networks:
+      - scms-network
+
+  user:
+    build:
+      context: ./user-service
+    image: user
+    container_name: user
+    ports:
+      - "8082:8082"
+    depends_on:
+      - discovery
+    networks:
+      - scms-network
+  credit:
+    build:
+      context: ./credit-service
+    image: credit
+    container_name: credit
+    ports:
+      - "8083:8083"
+    depends_on:
+      - discovery
+      - user
+    networks:
+      - scms-network
+networks:
+  scms-network:
+    driver: bridge

@@ -16,7 +16,7 @@ public class CreditReportController {
 	@Autowired
 	CreditReportService creditReportService;
 	
-	@GetMapping("/get-creditReort/{id}")
+	@GetMapping("/get-report/{id}")
 	public CreditReport getCreditReport(@PathVariable ("id") Long id) {
 		return creditReportService.getCreditReport(id);
 		

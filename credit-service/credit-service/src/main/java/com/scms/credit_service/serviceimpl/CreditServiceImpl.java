@@ -1,7 +1,8 @@
 package com.scms.credit_service.serviceimpl;
 
 import java.time.LocalDate;
-import java.util.UUID;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,25 +24,46 @@ public class CreditServiceImpl implements CreditService {
 
 	@Autowired
 	CreditRepo creditRepo;
-	 
+
+
+	@CircuitBreaker(name="userServiceBreaker" , fallbackMethod = "userFallBack")
 	@Override
-	@CircuitBreaker(name="credCB" , fallbackMethod = "creditServiceFallback")
-	public CreditReport createReport(Long userId) {
+	public Map createReport(Long userId) {
+		Map response = new HashMap<>();
 		CreditReport report = new CreditReport();
-		UserDTO userDTO = userClient.getUser(userId);
-		try {
-			
+		
+		
+		
+		
+
+			UserDTO userDTO = userClient.getUser(userId);
+
+			try {
 			report.setUserId(userId);
 			report.setCreditScore((int) (Math.random() * 400) + 400); // score between 400–800
-			report.setCreditStatus(report.getCreditScore() > 650 ? "Vanthiruchu GOOD" : "Vanthiruchu POOR");
+			report.setCreditStatus(report.getCreditScore() > 650 ? "GOOD" : "POOR");
 			report.setReportGeneratedDate(LocalDate.now().toString());
 
-			return creditRepo.save(report);
+			report =  creditRepo.save(report);
+			
+			response.put("creditReport", report);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return report;
+		return response;
 	}
+	
+	
+	public Map userFallBack(Long userId , Throwable throwable) {
+
+	    Map<String, Object> fallbackResponse = new HashMap<>();
+	    fallbackResponse.put("message", "User service is down. Returning fallback response.");
+	    fallbackResponse.put("userId", userId);
+	    fallbackResponse.put("error", throwable.getMessage());
+
+	    return fallbackResponse;
+	}
+	
 
 	@Override
 	public CreditUserDTO createUserReport(Long userId) {
@@ -61,14 +83,5 @@ public class CreditServiceImpl implements CreditService {
 		}
 		return new CreditUserDTO(userDTO, report);
 	}
-	
-    public CreditReport creditServiceFallback(Long userId, Throwable ex) {
-        CreditReport report = new CreditReport();
-        report.setUserId(userId);
-        report.setCreditScore(-1);
-        report.setCreditStatus("varala varala");
-//        report.setReportId("TEMP-" + UUID.randomUUID());
-        return report;
-    }
 
 }

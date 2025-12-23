@@ -1,5 +1,7 @@
 package com.scms.credit_service.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +20,7 @@ public class CreditController {
 	CreditService creditService;
 	
 	@PostMapping("/create-report/{userId}")
-	public CreditReport createReport(@PathVariable ("userId") Long userId) {
+	public Map createReport(@PathVariable ("userId") Long userId) {
 		return creditService.createReport(userId);
 	}
 	

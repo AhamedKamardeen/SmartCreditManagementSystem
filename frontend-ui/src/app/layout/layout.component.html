@@ -1,0 +1,24 @@
+<div class="app-container">
+
+  <!-- Top Navbar -->
+  <header class="navbar">
+    <h2>SCMS</h2>
+    <button class="logout-btn" (click)="logout()">Logout</button>
+  </header>
+
+  <div class="content">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+      <a routerLink="/users" routerLinkActive="active">Users</a>
+      <a routerLink="/credit-reports" routerLinkActive="active">Credit Reports</a>
+    </aside>
+
+    <!-- MAIN ROUTE AREA -->
+    <main class="main">
+      <router-outlet></router-outlet>
+    </main>
+
+  </div>
+</div>

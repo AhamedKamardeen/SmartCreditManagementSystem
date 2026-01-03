@@ -1,0 +1,31 @@
+<div class="page-container">
+  <h2 class="page-title">Users</h2>
+
+  <div class="card" *ngIf="!loading">
+    <table>
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Role</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.username }}</td>
+          <td>{{ user.role }}</td>
+          <td>
+            <span class="status active" *ngIf="user.status === 'ACTIVE'">
+              Active
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="loading" *ngIf="loading">
+    Loading users...
+  </div>
+</div>
